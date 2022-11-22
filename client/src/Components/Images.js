@@ -10,9 +10,13 @@ const Container = styled.div`
 const Photos = styled.img`
   aspect-ratio: 9/8;
   object-fit: cover;
-  height: 160px;
+  height: 150px;
   border-radius: 5px;
   object-position: center;
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    aspect-ratio: 29/25;
+    height: 250px;
+  }
 `;
 
 const Overlay = styled.div`
@@ -26,8 +30,12 @@ const Overlay = styled.div`
   left: 0;
   right: 0;
   aspect-ratio: 9/8;
-  height: 150px;
+  height: 140px;
   transform: translate(5px, 5px);
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    aspect-ratio: 29/25;
+    height: 240px;
+  }
 `;
 
 const Images = ({ img }) => {

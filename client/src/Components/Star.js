@@ -4,7 +4,10 @@ import Img from "../Images/Star.png";
 
 const StarImg = styled.img`
   aspect-ratio: 1;
-  height: 20px;
+  height: 30px;
+  @media ${(props) => props.theme.MediaQueries.m.query} {
+    height: 40px;
+  }
 `;
 
 const Star = () => {

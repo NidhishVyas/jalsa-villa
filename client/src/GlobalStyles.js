@@ -13,6 +13,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     padding:0;
     margin:0;
+    background: #F5F5F5;
   }
 
   a {
@@ -42,10 +43,10 @@ const GlobalStyle = createGlobalStyle`
   main {
     margin: 0 auto;
     @media ${(props) => props.theme.MediaQueries.m.query} {
-      max-width: 768px;
+      /* max-width: 768px; */
     }
     @media ${(props) => props.theme.MediaQueries.l.query} {
-      max-width: 1400px;
+      /* max-width: 1600px; */
     }
   }
 `;

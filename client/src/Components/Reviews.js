@@ -27,6 +27,8 @@ const ReviewStar = styled.div`
 
 const Review = styled.p`
   font-size: 35px;
+  height: 220px;
+  overflow: hidden;
   font-family: ${(props) => props.theme.Fonts.Ruthie};
 `;
 

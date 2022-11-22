@@ -5,18 +5,21 @@ import { Carousel } from "react-responsive-carousel";
 import Hero from "../Images/Hero.png";
 import ReviewBg from "../Images/ReviewBg.png";
 import Triangle from "../Images/Triangle.svg";
+import HeroVec from "../Images/Hero Triangle.png";
+import Arrow from "../Images/Arrow.svg";
 import Star from "../Components/Star";
 import Images from "../Components/Images";
 import AmenitiesImg from "../Components/AmenitiesImg";
 import AmenitiesInfo from "../Components/AmenitiesInfo";
 import Reviews from "../Components/Reviews";
 import "../Helper/carousel.css";
+import Footer from "../Components/Footer";
 
 const Container = styled.main`
-  padding: 10px;
+  padding: 30px;
 `;
 
-const HeroSection = styled.section`
+const HeroSectionMob = styled.section`
   background-image: url(${Hero});
   background-repeat: no-repeat;
   background-size: cover;
@@ -24,6 +27,152 @@ const HeroSection = styled.section`
   height: 70vh;
   width: auto;
   position: relative;
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    display: none;
+  }
+`;
+
+const HeroSectionDesk = styled.section`
+  background-image: url(${Hero});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: 92vh;
+  width: auto;
+  position: relative;
+  color: #fff;
+  display: none;
+  margin-bottom: 25px;
+  padding: 20px;
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    display: block;
+  }
+`;
+
+const Navbar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  max-width: 1200px;
+  margin: 0px auto;
+
+  div:nth-of-type(1),
+  div:nth-of-type(2),
+  div:nth-of-type(3),
+  div:nth-of-type(5),
+  div:nth-of-type(6),
+  div:nth-of-type(7) {
+    flex-basis: 16.66%;
+  }
+  div:nth-of-type(4) {
+    flex-basis: 20%;
+  }
+`;
+
+const Name = styled.h1`
+  font-size: 60px;
+  font-weight: 400;
+  font-family: ${(props) => props.theme.Fonts.Ruthie};
+`;
+
+const NavItems = styled.p`
+  font-weight: 700;
+  font-family: ${(props) => props.theme.Fonts.Poppins};
+  font-size: 16px;
+  position: relative;
+  width: fit-content;
+  margin: 0 auto;
+  cursor: pointer;
+
+  &:hover {
+    color: #bb9356;
+  }
+
+  &:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #bb9356;
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+  }
+
+  &:hover:after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+  }
+`;
+
+const NavBtn = styled.button`
+  background: none;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  font-family: ${(props) => props.theme.Fonts.Poppins};
+  padding: 5px 20px;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    background: #bb9356;
+    border: 1px solid #bb9356;
+    color: #000;
+  }
+`;
+
+const HeroContent = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+`;
+
+const HeroText = styled.h1`
+  font-weight: 400;
+  font-size: 50px;
+  font-family: ${(props) => props.theme.Fonts.Ruthie};
+  color: #bb9356;
+`;
+
+const HeroHeading = styled.h1`
+  font-weight: 400;
+  font-size: 85px;
+  line-height: 115px;
+  font-family: ${(props) => props.theme.Fonts.Abril};
+  width: max-content;
+`;
+
+const HeroTriangle = styled.img`
+  position: absolute;
+  top: 40%;
+
+  &.left {
+    left: -20px;
+  }
+  &.right {
+    right: -20px;
+    rotate: 180deg;
+  }
+`;
+
+const HeroArrow = styled.img`
+  position: absolute;
+  top: 47.5%;
+
+  &.right {
+    left: -10px;
+    rotate: 180deg;
+  }
+  &.left {
+    right: -10px;
+  }
 `;
 
 const Menu = styled.div`
@@ -42,6 +191,13 @@ const Greeting = styled.div`
   text-align: center;
   font-size: 35px;
   font-weight: 400;
+
+  @media ${(props) => props.theme.MediaQueries.m.query} {
+    font-size: 42.5px;
+  }
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    font-size: 50px;
+  }
 `;
 
 const Hello = styled.p`
@@ -59,7 +215,14 @@ const About = styled.p`
   font-family: ${(props) => props.theme.Fonts.Poppins};
   line-height: 18px;
   text-align: center;
-  margin: 30px 0;
+  margin: 30px auto;
+  max-width: 650px;
+  @media ${(props) => props.theme.MediaQueries.m.query} {
+    font-size: 14px;
+  }
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    font-size: 16px;
+  }
 `;
 
 const ImageDiv = styled.div`
@@ -68,7 +231,8 @@ const ImageDiv = styled.div`
   gap: 15px 10px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  margin:0 auto 20px;
+  max-width: 1200px;
 `;
 
 const AmenitiesDiv = styled.div`
@@ -82,9 +246,10 @@ const AmenitiesDiv = styled.div`
 const ReviewsSection = styled.section`
   background-image: url(${ReviewBg});
   padding: 10px;
-  margin: 30px 0;
+  margin: 30px auto;
   height: 500px;
   position: relative;
+  max-width: 1200px;
 `;
 
 const TriangleImg = styled.img`
@@ -108,7 +273,7 @@ const Features = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 20px;
 `;
 
@@ -119,11 +284,16 @@ const FeatureDiv = styled.div`
   flex-direction: column;
   height: 230px;
   width: 325px;
-  border: 1.5px solid black;
+  border: 1px solid black;
   border-radius: 10px;
   text-align: center;
   font-family: ${(props) => props.theme.Fonts.Poppins};
   transition: all 0.3s ease;
+
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    height: 285px;
+    width: 385px;
+  }
 
   &:hover {
     background-color: #bb9356;
@@ -142,8 +312,15 @@ const FeatureLogo = styled.div`
   & box-icon {
     height: 40px;
     width: auto;
+    @media ${(props) => props.theme.MediaQueries.l.query} {
+      height: 60px;
+    }
   }
   transition: all 0.3s ease;
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    height: 80px;
+    width: 80px;
+  }
 
   ${FeatureDiv}:hover & {
     box-shadow: 1px 0px 4px 1px rgba(0, 0, 0, 0.3);
@@ -157,6 +334,9 @@ const FeatureTitle = styled.h1`
   font-size: 18px;
   font-weight: 400;
   margin: 30px 0 10px;
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    font-size: 20px;
+  }
 `;
 
 const FeatureInfo = styled.p`
@@ -164,6 +344,9 @@ const FeatureInfo = styled.p`
   font-weight: 400;
   color: #a5a5a5;
   transition: all 0.3s ease;
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    font-size: 16px;
+  }
 
   ${FeatureDiv}:hover & {
     color: #fff;
@@ -173,11 +356,47 @@ const FeatureInfo = styled.p`
 const Home = () => {
   return (
     <Container>
-      <HeroSection>
+      <HeroSectionMob>
         <Menu>
           <box-icon name="menu-alt-right"></box-icon>
         </Menu>
-      </HeroSection>
+      </HeroSectionMob>
+      <HeroSectionDesk>
+        <HeroTriangle src={HeroVec} className="left" />
+        <HeroTriangle src={HeroVec} className="right" />
+        <HeroArrow src={Arrow} className="left" />
+        <HeroArrow src={Arrow} className="right" />
+        <Navbar>
+          <div>
+            <NavItems>Home</NavItems>
+          </div>
+          <div>
+            <NavItems>About</NavItems>
+          </div>
+          <div>
+            <NavItems>Feature</NavItems>
+          </div>
+          <div>
+            <Name>Jalsa</Name>
+          </div>
+          <div>
+            <NavItems>Services</NavItems>
+          </div>
+          <div>
+            <NavItems>Contact Us</NavItems>
+          </div>
+          <div>
+            <NavBtn>Book now</NavBtn>
+          </div>
+        </Navbar>
+        <HeroContent>
+          <HeroText>Build With Love</HeroText>
+          <HeroHeading>
+            We Create <br />
+            Memories to Remember
+          </HeroHeading>
+        </HeroContent>
+      </HeroSectionDesk>
       <Greeting>
         <Hello>Hello Dear</Hello>
         <Farm>We Are Farmhousing!</Farm>
@@ -189,6 +408,8 @@ const Home = () => {
         tristique diam. Integer
       </About>
       <ImageDiv>
+        <Images img={Hero} />
+        <Images img={Hero} />
         <Images img={Hero} />
         <Images img={Hero} />
         <Images img={Hero} />
@@ -230,7 +451,7 @@ const Home = () => {
       </ReviewsSection>
       <Greeting>
         <Hello>Hello Dear</Hello>
-        <Farm>We Are Farmhousing!</Farm>
+        <Farm>Best Features!</Farm>
         <Star />
       </Greeting>
       <Features>
@@ -262,6 +483,7 @@ const Home = () => {
           </FeatureInfo>
         </FeatureDiv>
       </Features>
+      <Footer />
     </Container>
   );
 };
