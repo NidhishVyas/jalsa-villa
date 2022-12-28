@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
@@ -11,12 +11,17 @@ import Star from "../Components/Star";
 import Images from "../Components/Images";
 import AmenitiesImg from "../Components/AmenitiesImg";
 import AmenitiesInfo from "../Components/AmenitiesInfo";
+import Booking from "../Components/Booking";
 import Reviews from "../Components/Reviews";
 import "../Helper/carousel.css";
 import Footer from "../Components/Footer";
+import { getAll } from "../Services/user";
 
 const Container = styled.main`
-  padding: 30px;
+  padding: 20px;
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    padding: 4vh;
+  }
 `;
 
 const HeroSectionMob = styled.section`
@@ -42,7 +47,7 @@ const HeroSectionDesk = styled.section`
   position: relative;
   color: #fff;
   display: none;
-  margin-bottom: 25px;
+  margin-bottom: 4vh;
   padding: 20px;
   @media ${(props) => props.theme.MediaQueries.l.query} {
     display: block;
@@ -149,29 +154,41 @@ const HeroHeading = styled.h1`
   width: max-content;
 `;
 
-const HeroTriangle = styled.img`
+const Position = styled.div`
   position: absolute;
   top: 40%;
 
   &.left {
-    left: -20px;
+    left: 0px;
   }
   &.right {
-    right: -20px;
+    right: 0px;
+  }
+`;
+
+const HeroTriangle = styled.img`
+  position: relative;
+  top: 40%;
+
+  &.left {
+    left: -15px;
+  }
+  &.right {
+    right: -45px;
     rotate: 180deg;
   }
 `;
 
 const HeroArrow = styled.img`
-  position: absolute;
-  top: 47.5%;
+  position: relative;
+  top: -52px;
 
   &.right {
-    left: -10px;
+    left: 5px;
     rotate: 180deg;
   }
   &.left {
-    right: -10px;
+    right: 50px;
   }
 `;
 
@@ -231,7 +248,7 @@ const ImageDiv = styled.div`
   gap: 15px 10px;
   justify-content: center;
   align-items: center;
-  margin:0 auto 20px;
+  margin: 0 auto 20px;
   max-width: 1200px;
 `;
 
@@ -354,18 +371,37 @@ const FeatureInfo = styled.p`
 `;
 
 const Home = () => {
+  const [book, setBook] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    getAll()
+      .then((result) => {
+        setUser(result.data.data);
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
+  }, []);
+
   return (
     <Container>
+      <Booking drop={book} setBook={setBook} user={user} />
       <HeroSectionMob>
         <Menu>
           <box-icon name="menu-alt-right"></box-icon>
         </Menu>
       </HeroSectionMob>
       <HeroSectionDesk>
-        <HeroTriangle src={HeroVec} className="left" />
-        <HeroTriangle src={HeroVec} className="right" />
-        <HeroArrow src={Arrow} className="left" />
-        <HeroArrow src={Arrow} className="right" />
+        <Position className="left">
+          <HeroTriangle src={HeroVec} className="left" />
+          <HeroArrow src={Arrow} className="left" />
+        </Position>
+        <Position className="right">
+          <HeroTriangle src={HeroVec} className="right" />
+          <HeroArrow src={Arrow} className="right" />
+        </Position>
+
         <Navbar>
           <div>
             <NavItems>Home</NavItems>
@@ -385,7 +421,7 @@ const Home = () => {
           <div>
             <NavItems>Contact Us</NavItems>
           </div>
-          <div>
+          <div onClick={() => setBook(true)}>
             <NavBtn>Book now</NavBtn>
           </div>
         </Navbar>
@@ -440,6 +476,7 @@ const Home = () => {
           infiniteLoop
           showArrows={false}
           autoPlay
+          showThumbs={false}
           interval={5000}
           minHeight={600}
         >

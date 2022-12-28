@@ -15,9 +15,12 @@ const FooterSection = styled.section`
 const TriangleImg = styled.img`
   position: absolute;
   fill: #000;
-  top: -6.6%;
+  top: -3%;
   left: 50%;
   transform: translateX(-50%);
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    top: -6.6%;
+  }
 `;
 
 const FollowText = styled.p`
@@ -132,7 +135,9 @@ const FlexDiv = styled.div`
 `;
 
 const Div = styled.div`
-  width: 400px;
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    width: 400px;
+  }
 `;
 
 const Footer = () => {

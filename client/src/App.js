@@ -6,6 +6,7 @@ import GlobalStyle from "./GlobalStyles";
 import { theme } from "./Theme";
 import { ThemeProvider } from "styled-components";
 import Home from "./Pages/Home";
+import Admin from "./Pages/Admin";
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Suspense>
           <Routes>
             <Route path={ROUTES.HOMEPAGE} element={<Home />} />
+            <Route path={ROUTES.ADMINPAGE} element={<Admin />} />
           </Routes>
         </Suspense>
       </ThemeProvider>
