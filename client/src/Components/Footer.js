@@ -144,7 +144,7 @@ const Footer = () => {
   return (
     <>
       <FooterSection>
-        <TriangleImg src={Triangle} />
+        <TriangleImg src={Triangle} alt="Triangle" />
         <FlexDiv>
           <Div>
             <FollowText>Follow Us</FollowText>
@@ -161,15 +161,14 @@ const Footer = () => {
             </SocialDiv>
           </Div>
           <Div>
-            <Heading>Farmhouse</Heading>
-            <Info>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.{" "}
-            </Info>
+            <Heading>Jalsa</Heading>
+            <Info>Family !!! Friends!!! Fun!!! Relax!!!</Info>
           </Div>
           <Div>
             <AddressHead>Address</AddressHead>
             <Info>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              Jalsa, G8, Future farms, Near Hindu Seva Sangh, Chavare, Mamnoli,
+              Maharastra 421401
             </Info>
           </Div>
         </FlexDiv>

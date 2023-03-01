@@ -5,14 +5,15 @@ import Star from "./Star";
 const Container = styled.div`
   aspect-ratio: 12/13;
   height: 260px;
-  border: 2px dashed #bb9356;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   font-family: ${(props) => props.theme.Fonts.Poppins};
-  padding: 0 15px;
+  padding: 20px;
+  background-color: #fff;
+  position: relative;
 `;
 
 const Heading = styled.h1`
@@ -27,12 +28,25 @@ const Info = styled.p`
   font-size: 13px;
 `;
 
+const Overlay = styled.div`
+  z-index: 1;
+  border: 2px dashed rgba(187, 147, 86, 0.5);
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: calc(100% - 15px);
+  width: calc(100% - 15px);
+  transform: translate(-50%, -50%);
+`;
+
 const AmenitiesInfo = ({ content, title }) => {
   return (
     <Container>
       <Heading>{title}</Heading>
       <Star />
       <Info>{content}</Info>
+      <Overlay></Overlay>
     </Container>
   );
 };

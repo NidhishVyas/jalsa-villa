@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Hero from "../Images/Hero.png";
+import User from "../Images/user.png";
 
 const ReviewsDiv = styled.div`
   display: flex;
@@ -62,12 +62,10 @@ const Reviews = () => {
           </ReviewStar>
         </StarDiv>
         <Review>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce
-          pellentesque efficitur ante, in viverra sem interdum sed. Ut non
-          tristique diam. Integer
+        "One of the most beautiful farmhouse I have even been to. It has well maintained amenities with the best service"
         </Review>
-        <ReviewerImg src={Hero} />
-        <Reviewer>John Dalton</Reviewer>
+        <ReviewerImg src={User} alt="Review Img"/>
+        <Reviewer>Nidhish Vyas</Reviewer>
       </ReviewsDiv>
     </>
   );

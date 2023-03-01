@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Hero from "../Images/Hero.png";
-import { getAllPending } from "../Services/admin";
+import { getAllPending, getAllAck, statusUpdate } from "../Services/admin";
+import Loader from "../Components/Loader.js";
+import { useNavigate } from "react-router-dom";
+import * as ROUTES from "../Constants/routes";
+import { toast } from "react-toastify";
 
 const AdminSection = styled.section`
   display: flex;
@@ -53,7 +57,15 @@ const Tabs = styled.p`
     fill: #b7b7b7;
   }
 
-  &:hover,
+  &:hover {
+    background: #b7b7b7;
+    color: #fff;
+
+    & box-icon {
+      fill: #fff;
+    }
+  }
+
   &.selected {
     background: #000;
     color: #fff;
@@ -119,6 +131,14 @@ const DataSection = styled.div`
 const Dashboard = styled.div`
   font-family: ${(props) => props.theme.Fonts.Poppins};
   font-weight: 500;
+
+  &.show {
+    display: block;
+  }
+
+  &.hide {
+    display: none;
+  }
 `;
 
 const Header = styled.h1`
@@ -167,6 +187,7 @@ const NameInfo = styled.div`
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
+  width: 250px;
 `;
 
 const Name = styled.div`
@@ -180,6 +201,8 @@ const Email = styled.div`
 
 const GuestDetails = styled.div`
   font-size: 14px;
+  width: 80px;
+  text-align: center;
 `;
 
 const ButtonDiv = styled.div`
@@ -199,74 +222,162 @@ const Button = styled.button`
   background: ${(props) => (props.red ? "#ff2400" : "#58DA6D")};
 `;
 
+const Status = styled.p`
+  width: 105px;
+  color: #58da6d;
+
+  &.red {
+    color: #ff2400;
+  }
+`;
+
 const Admin = () => {
   const [pending, setPending] = useState([]);
+  const [ack, setAck] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const [tab, setTab] = useState(1);
+  let navigate = useNavigate();
+
+  let months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "June",
+    "July",
+    "Aug",
+    "Sept",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const update = (id, status) => {
+    statusUpdate(id, status)
+      .then((result) => {
+        toast.success(result.data.message);
+        setToggle(!toggle);
+      })
+      .catch((err) => {
+        toast.warn(err.response.data.message);
+      });
+  };
 
   useEffect(() => {
     setLoading(true);
-
-    getAllPending()
-      .then((result) => {
-        console.log("here")
-        setPending(result.data);
-    setLoading(false);
-
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (tab === 1) {
+      getAllPending()
+        .then((result) => {
+          setPending(result.data.data);
+          setLoading(false);
+        })
+        .catch((err) => toast.warn(err));
+    } else if (tab === 2) {
+      getAllAck()
+        .then((result) => {
+          setAck(result.data.data);
+          setLoading(false);
+        })
+        .catch((err) => toast.warn(err));
+    }
+  }, [tab, toggle]);
 
   return (
-    <AdminSection>
-      <TabsSection>
-        <TabsDiv>
-          <Jalsa>Jalsa</Jalsa>
-          <Tabs>
-            <box-icon type="solid" name="dashboard"></box-icon>Dashboard
-          </Tabs>
-          <Tabs>
-            <box-icon name="history"></box-icon>History
-          </Tabs>
-        </TabsDiv>
-        <TabsDiv>
-          <UserImg src={Hero} />
-          <UserName>Nidhish Vyas</UserName>
-          <UserEmail>vyasnidhish2001@gmail.com</UserEmail>
-          <LogOut>
-            <box-icon name="log-out-circle"></box-icon>
-          </LogOut>
-        </TabsDiv>
-      </TabsSection>
-      <DataSection>
-        <Dashboard>
-          <Header>Dashboard</Header>
-          <Welcome>Welcome</Welcome>
-          <Overview>Booking Overview</Overview>
+    <>
+      {loading && <Loader />}
+      <AdminSection>
+        <TabsSection>
+          <TabsDiv>
+            <Jalsa>Jalsa</Jalsa>
+            <Tabs
+              onClick={() => setTab(1)}
+              className={tab === 1 ? "selected" : null}
+            >
+              <box-icon type="solid" name="dashboard"></box-icon>Dashboard
+            </Tabs>
+            <Tabs
+              onClick={() => setTab(2)}
+              className={tab === 2 ? "selected" : null}
+            >
+              <box-icon name="history"></box-icon>History
+            </Tabs>
+          </TabsDiv>
+          <TabsDiv>
+            <UserImg src={Hero} alt="Profile Pic" />
+            <UserName>Nidhish Vyas</UserName>
+            <UserEmail>vyasnidhish2001@gmail.com</UserEmail>
+            <LogOut
+              onClick={() =>
+                navigate(`${ROUTES.HOMEPAGE}`, {
+                  replace: false,
+                })
+              }
+            >
+              <box-icon name="log-out-circle"></box-icon>
+            </LogOut>
+          </TabsDiv>
+        </TabsSection>
+        <DataSection>
+          <Dashboard>
+            <Header>{tab === 1 ? "Dashboard" : "History"}</Header>
+            <Welcome>Welcome, Nidhish!</Welcome>
+            <Overview>
+              {tab === 1 ? "Booking Overview" : "Booking History"}
+            </Overview>
 
-          {pending.map((item, i) => {
-            return (
-              <Booking>
-                <DateDiv>
-                  <BookingDate>13</BookingDate>
-                  <BookingDay>Dec</BookingDay>
-                </DateDiv>
-                <NameInfo>
-                  <Name>Nidhish Vyas</Name>
-                  <Email>vyasnidhish2001@gmail.com</Email>
-                </NameInfo>
-                <GuestDetails>13/12/2022</GuestDetails>
-                <GuestDetails>13/12/2022</GuestDetails>
-                <GuestDetails>3A/2C</GuestDetails>
-                <ButtonDiv>
-                  <Button>Accept</Button>
-                  <Button red>Decline</Button>
-                </ButtonDiv>
-              </Booking>
-            );
-          })}
-        </Dashboard>
-      </DataSection>
-    </AdminSection>
+            {(tab === 1 ? pending : ack).map((item, i) => {
+              return (
+                <Booking key={i}>
+                  <DateDiv>
+                    <BookingDate>
+                      {new Date(item.createdAt).getDate()}
+                    </BookingDate>
+                    <BookingDay>
+                      {months[new Date(item.createdAt).getMonth()]}
+                    </BookingDay>
+                  </DateDiv>
+                  <NameInfo>
+                    <Name>{item.name}</Name>
+                    <Email>{item.email}</Email>
+                  </NameInfo>
+                  <GuestDetails>
+                    {new Date(item.checkIn).toLocaleDateString()}
+                  </GuestDetails>
+                  <GuestDetails>
+                    {new Date(item.checkOut).toLocaleDateString()}
+                  </GuestDetails>
+                  <GuestDetails>
+                    {item.guests.adults + "A/" + item.guests.children + "C"}
+                  </GuestDetails>
+                  {tab === 1 && (
+                    <ButtonDiv>
+                      <Button onClick={() => update(item._id, "Approved")}>
+                        Accept
+                      </Button>
+                      <Button
+                        red
+                        onClick={() => update(item._id, "Unapproved")}
+                      >
+                        Decline
+                      </Button>
+                    </ButtonDiv>
+                  )}
+                  {tab === 2 && (
+                    <Status
+                      className={item.isApprove === "Unapproved" ? "red" : null}
+                    >
+                      {item.isApprove}
+                    </Status>
+                  )}
+                </Booking>
+              );
+            })}
+          </Dashboard>
+        </DataSection>
+      </AdminSection>
+    </>
   );
 };
 

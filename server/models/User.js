@@ -41,6 +41,10 @@ const userSchema = new mongoose.Schema(
       default: "Pending",
       enum: ["Pending", "Approved", "Unapproved"],
     },
+    paymentSS: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Lottie from "react-lottie";
-import Load from "../Images/loader.json";
+import { Oval } from "react-loader-spinner";
 
 const Container = styled.main`
   display: flex;
@@ -25,8 +24,8 @@ const Container = styled.main`
 `;
 
 const LoadGif = styled.div`
-  height: 300px;
-  width: 300px;
+  height: 100px;
+  width: 100px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -36,22 +35,20 @@ const LoadGif = styled.div`
 `;
 
 const Loader = () => {
-  const loaderOptions = {
-    loop: true,
-    autoplay: true,
-    animationData: Load,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
   return (
-    <>
-      <Container>
-        <LoadGif>
-          <Lottie options={loaderOptions} />
-        </LoadGif>
-      </Container>
-    </>
+    <Container>
+      <LoadGif>
+        <Oval
+          ariaLabel="loading-indicator"
+          height={100}
+          width={100}
+          strokeWidth={5}
+          strokeWidthSecondary={1}
+          color="#bb9356"
+          secondaryColor="white"
+        />
+      </LoadGif>
+    </Container>
   );
 };
 

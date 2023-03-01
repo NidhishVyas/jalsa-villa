@@ -11,7 +11,7 @@ const StarImg = styled.img`
 `;
 
 const Star = () => {
-  return <StarImg src={Img} />;
+  return <StarImg src={Img} alt="Star" />;
 };
 
 export default Star;

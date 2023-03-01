@@ -2,8 +2,9 @@ const User = require("../models/User");
 const createDOMPurify = require("dompurify");
 const { JSDOM } = require("jsdom");
 const DOMPurify = createDOMPurify(new JSDOM("").window);
+const fs = require("fs");
 
-module.exports.getDetails = async (req, res) => {
+module.exports.addBooking = async (req, res) => {
   const {
     fname,
     lname,
@@ -18,26 +19,41 @@ module.exports.getDetails = async (req, res) => {
   let response = { success: false, message: "", errMessage: "" };
   let regex = new RegExp(/^((?!\.)[\w_.-]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm);
 
-  if (!fname) {
+  if (!req.file) {
+    response.message = "Please upload screenshot of payment";
+    return res.status(400).json(response);
+  } else if (!fname) {
+    fs.unlinkSync(req.file.path);
     response.message = "Please provide your first name";
     return res.status(400).json(response);
   } else if (!lname) {
+    fs.unlinkSync(req.file.path);
     response.message = "Please provide your last name";
     return res.status(400).json(response);
-  } else if (!adults) {
+  } else if (adults === 0) {
+    fs.unlinkSync(req.file.path);
     response.message = "Please provide a count of adults";
     return res.status(400).json(response);
   } else if (!email.match(regex)) {
-    response.message = "Please provide your proper email";
+    fs.unlinkSync(req.file.path);
+    response.message = "Please provide a proper email";
     return res.status(400).json(response);
   } else if (!contactNumber || contactNumber.length !== 10) {
-    response.message = "Please provide your proper contact details";
+    fs.unlinkSync(req.file.path);
+    response.message = "Please provide a proper contact number";
     return res.status(400).json(response);
   }
 
   try {
     let userDb = await User.find();
     if (checkIn && checkOut) {
+      if (
+        JSON.stringify(new Date(checkIn)) >= JSON.stringify(new Date(checkOut))
+      ) {
+        fs.unlinkSync(req.file.path);
+        response.message = "Check-in cannot be done after check-out";
+        return res.status(400).json(response);
+      }
       userDb = userDb.filter((item) => {
         return (
           (JSON.stringify(checkIn) >= JSON.stringify(item.checkIn) &&
@@ -50,12 +66,22 @@ module.exports.getDetails = async (req, res) => {
       });
 
       if (userDb.length !== 0) {
+        fs.unlinkSync(req.file.path);
         response.message = "These dates are not available";
         return res.status(400).json(response);
       }
     } else {
-      response.message = "Please provide check-in date";
+      fs.unlinkSync(req.file.path);
+      response.message = "Please provide check-in and check-out date";
       return res.status(400).json(response);
+    }
+
+    let image;
+    if (req.file.originalname != "") {
+      if (process.env.NODE_ENV == "prod")
+        image = process.env.APP_URL + "/images/" + req.file.filename;
+      if (process.env.NODE_ENV == "dev")
+        image = process.env.APP_DEV_URL + "/images/" + req.file.filename;
     }
 
     let user = new User({
@@ -64,7 +90,8 @@ module.exports.getDetails = async (req, res) => {
       checkOut,
       contactNumber,
       email,
-      guests: { adults, children,  },
+      guests: { adults, children },
+      paymentSS: image,
     });
 
     let result = await user.save();
@@ -82,9 +109,9 @@ module.exports.getDetails = async (req, res) => {
   }
 };
 
-module.exports.showAll = async (req, res) => {
+module.exports.showAllDates = async (req, res) => {
   let response = { success: false, message: "", errMessage: "", data: "" };
-  await User.find()
+  await User.find({ isApprove: { $ne: "Unapproved" } })
     .then((result) => {
       response.success = true;
       response.message = "Search complete";

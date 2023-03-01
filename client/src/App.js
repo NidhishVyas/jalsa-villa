@@ -5,6 +5,8 @@ import * as ROUTES from "./Constants/routes";
 import GlobalStyle from "./GlobalStyles";
 import { theme } from "./Theme";
 import { ThemeProvider } from "styled-components";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Home from "./Pages/Home";
 import Admin from "./Pages/Admin";
 
@@ -20,6 +22,7 @@ const App = () => {
           </Routes>
         </Suspense>
       </ThemeProvider>
+      <ToastContainer autoClose={2000} />
     </>
   );
 };

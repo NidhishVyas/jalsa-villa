@@ -6,6 +6,8 @@ import Gpay from "../Images/Gpay.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { userBooking } from "../Services/user";
+import { toast } from "react-toastify";
+const formData = require("form-data");
 
 const BlurredBg = styled.div`
   height: 100%;
@@ -38,9 +40,9 @@ const Popup = styled.div`
   overflow: hidden;
   @media ${(props) => props.theme.MediaQueries.m.query} {
     height: 600px;
-    width: 750px;
+    width: 850px;
     max-width: unset;
-    padding: 55px 25px;
+    padding: 55px 75px;
   }
   @media ${(props) => props.theme.MediaQueries.l.query} {
   }
@@ -56,6 +58,29 @@ const Overlay = styled.div`
   height: calc(100% - 20px);
   width: calc(100% - 20px);
   transform: translate(-50%, -50%);
+`;
+
+const Cross = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+
+  & box-icon {
+    height: 22px;
+    width: 22px;
+    fill: #bb9356;
+  }
+
+  @media ${(props) => props.theme.MediaQueries.m.query} {
+    top: 30px;
+    right: 30px;
+
+    & box-icon {
+      height: 30px;
+      width: 30px;
+    }
+  }
 `;
 
 const Heading = styled.h1`
@@ -110,12 +135,22 @@ const DottedLine = styled.hr`
   }
 `;
 
+const Content = styled.h1`
+  font-family: ${(props) => props.theme.Fonts.Poppins};
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 21px;
+  text-align: center;
+  color: #a5a5a5;
+  margin: 15px 0;
+`;
+
 const UserInfo = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 325px;
-  overflow-y: scroll;
+  height: 243px;
+  overflow-y: auto;
   transition: linear 0.4s;
 
   &.hide {
@@ -124,7 +159,7 @@ const UserInfo = styled.form`
 
   @media ${(props) => props.theme.MediaQueries.m.query} {
     overflow-y: auto;
-    height: 285px;
+    height: 243px;
   }
 `;
 
@@ -164,18 +199,18 @@ const Proceed = styled.button`
   color: #fff;
   font-size: 16px;
   font-family: ${(props) => props.theme.Fonts.Poppins};
-  margin: 30px 0 0;
+  margin: ${(props) => (props.less ? "0px 0 0" : "30px 0 0")};
 `;
 
 const DateInfo = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 325px;
+  height: 243px;
   overflow: auto;
   transition: linear 0.4s;
   position: relative;
-  top: -60%;
+  top: -45%;
   left: 0;
 
   &.show {
@@ -192,7 +227,8 @@ const DateInfo = styled.form`
 
   @media ${(props) => props.theme.MediaQueries.m.query} {
     overflow-y: auto;
-    height: 285px;
+    height: 243px;
+    top: -50%;
   }
 `;
 
@@ -335,6 +371,7 @@ const Icon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 
   & box-icon {
     height: 15px;
@@ -354,17 +391,18 @@ const Close = styled.p`
   font-size: 14px;
   text-decoration: underline;
   margin-left: 65%;
+  cursor: pointer;
 `;
 
 const PayInfo = styled.form`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  height: 325px;
+  height: 243px;
   overflow-y: scroll;
   transition: linear 0.4s;
   position: relative;
-  top: -120%;
+  top: -90%;
   left: 0;
   text-align: left;
   &.show {
@@ -380,8 +418,8 @@ const PayInfo = styled.form`
 
   @media ${(props) => props.theme.MediaQueries.m.query} {
     overflow-y: auto;
-    height: 285px;
-    top: -115%;
+    height: 243px;
+    top: -100%;
   }
 `;
 
@@ -442,10 +480,14 @@ const Total = styled.p`
 `;
 
 const PaymentFlex = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   @media ${(props) => props.theme.MediaQueries.m.query} {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    flex-direction: row;
   }
 `;
 
@@ -453,6 +495,7 @@ const QRScan = styled.img`
   width: 120px;
   height: 120px;
   margin: 10px auto 0;
+  text-align: center;
   @media ${(props) => props.theme.MediaQueries.m.query} {
     margin: 0;
   }
@@ -486,14 +529,60 @@ const Number = styled.p`
   font-size: 18px;
 `;
 
+const UploadSS = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 5px auto 5px;
+  font-family: ${(props) => props.theme.Fonts.Poppins};
+`;
+
+const Upload = styled.p`
+  font-weight: 500;
+  font-size: 16px;
+`;
+
+const InputSS = styled.div``;
+
+const Label = styled.label`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 400;
+  font-size: 14px;
+  color: #c5c5c5;
+  margin-left: 20px;
+  padding: 5px 20px;
+  border: 1px dashed #000;
+  border-radius: 7px;
+  width: 140px;
+
+  & box-icon {
+    fill: #c5c5c5;
+    height: 22px;
+    width: 22px;
+    margin-right: 7px;
+  }
+
+  &.uploaded {
+    color: #000;
+    background-color: #58da6d;
+
+    & box-icon {
+      fill: #000;
+    }
+  }
+`;
+
 const ThankYou = styled.div`
   display: flex;
   flex-direction: column;
-  height: 325px;
+  height: 243px;
   overflow: auto;
   transition: linear 0.4s;
   position: relative;
-  top: -180%;
+  top: -150%;
   left: 0;
 
   &.show {
@@ -509,15 +598,16 @@ const ThankYouText = styled.p`
   font-weight: 500;
   font-family: ${(props) => props.theme.Fonts.Poppins};
   font-size: 16px;
-  margin: 85px 0;
+  margin: 59px 0;
 `;
 
 const Booking = ({ drop, setBook, user }) => {
+  let form = new formData();
+
   const [step, setStep] = useState(1);
   const [showGuest, setShowGuest] = useState(false);
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
-  const [toggle, setToggle] = useState([false, false, false]);
   const [userDetails, setUserDetails] = useState({
     fname: "",
     lname: "",
@@ -525,6 +615,7 @@ const Booking = ({ drop, setBook, user }) => {
     phone: "",
     adult: 0,
     child: 0,
+    paymentSS: null,
   });
 
   let disabledDateList = [];
@@ -539,15 +630,109 @@ const Booking = ({ drop, setBook, user }) => {
 
   if (drop) disableDates();
 
+  const userValidate = (jump) => {
+    let regex = new RegExp(
+      /^((?!\.)[\w_.-]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm
+    );
+
+    if (!userDetails.fname) {
+      toast.warn("Please provide your first name");
+      return null;
+    }
+    if (!userDetails.lname) {
+      toast.warn("Please provide your last name");
+      return null;
+    }
+    if (!userDetails.phone || userDetails.phone.length !== 10) {
+      toast.warn("Please provide a proper contact number");
+      return null;
+    }
+    if (!userDetails.email.match(regex)) {
+      toast.warn("Please provide a proper email");
+      return null;
+    }
+
+    if (jump) setStep(2);
+    return true;
+  };
+
+  const dateValidate = (jump) => {
+    if (checkIn && checkOut) {
+      if (JSON.stringify(checkIn) >= JSON.stringify(checkOut)) {
+        toast.warn("Check-in cannot be done after check-out");
+        return null;
+      }
+
+      user = user.filter((item) => {
+        return (
+          (JSON.stringify(checkIn) >= JSON.stringify(item.checkIn) &&
+            JSON.stringify(checkIn) <= JSON.stringify(item.checkOut)) ||
+          (JSON.stringify(checkOut) >= JSON.stringify(item.checkIn) &&
+            JSON.stringify(checkOut) <= JSON.stringify(item.checkOut)) ||
+          (JSON.stringify(checkIn) <= JSON.stringify(item.checkIn) &&
+            JSON.stringify(checkOut) >= JSON.stringify(item.checkOut))
+        );
+      });
+
+      if (user.length !== 0) {
+        toast.warn("These dates are not available");
+        return null;
+      }
+    } else {
+      toast.warn("Please provide check-in and check-out date");
+      return null;
+    }
+
+    if (userDetails.adult === 0) {
+      toast.warn("Please provide a count of adults");
+      return null;
+    }
+    setShowGuest(false);
+    if (jump) setStep(3);
+  };
+
   const booking = () => {
-    userBooking(userDetails, checkIn, checkOut)
+    if (!userDetails.paymentSS) {
+      toast.warn("Please upload screenshot of payment");
+      return null;
+    }
+
+    form.set("fname", userDetails.fname);
+    form.set("lname", userDetails.lname);
+    form.set("email", userDetails.email);
+    form.set("contactNumber", userDetails.phone);
+    form.set("checkIn", checkIn);
+    form.set("checkOut", checkOut);
+    form.set("adults", userDetails.adult);
+    form.set("children", userDetails.child);
+    form.set("image", userDetails.paymentSS);
+
+    userBooking(form)
       .then((result) => {
-        console.log(result);
+        toast.success(result.data.message);
         setStep(step + 1);
       })
       .catch((err) => {
-        console.log(err.response.data.message);
+        toast.warn(err.response.data.message);
       });
+  };
+
+  const enableScroll = (e) => {
+    e.preventDefault();
+    setUserDetails({
+      fname: "",
+      lname: "",
+      email: "",
+      phone: "",
+      adult: 0,
+      child: 0,
+      paymentSS: null,
+    });
+    setCheckIn(null);
+    setCheckOut(null);
+    setStep(1);
+    setBook(false);
+    window.onscroll = function () {};
   };
 
   return (
@@ -555,30 +740,25 @@ const Booking = ({ drop, setBook, user }) => {
       <BlurredBg className={drop ? "drop" : null}>
         <Popup>
           <Overlay />
+          <Cross onClick={enableScroll}>
+            <box-icon name="x"></box-icon>
+          </Cross>
           <Heading>Reservation</Heading>
           <BookHeading>Book Your Stay</BookHeading>
           <Progress>
-            <Step
-              onClick={() => {
-                setStep(1);
-              }}
-            >
+            <Step onClick={() => setStep(1)}>
               <StepNo>1</StepNo>
-              <StarImg src={Star} />
+              <StarImg src={Star} alt="Star" />
             </Step>
             <DottedLine />
-            <Step
-              onClick={() => {
-                setStep(2);
-              }}
-            >
+            <Step onClick={() => userValidate(true)}>
               <StepNo>2</StepNo>
               <StarImg src={Star} />
             </Step>
             <DottedLine />
             <Step
               onClick={() => {
-                setStep(3);
+                if (userValidate(false)) dateValidate(true);
               }}
             >
               <StepNo>3</StepNo>
@@ -590,6 +770,10 @@ const Booking = ({ drop, setBook, user }) => {
               <StarImg src={Star} />
             </Step>
           </Progress>
+          <Content>
+            Book your stay here because enjoyment is the aim and we provide just
+            that. Family!!! Friends!!! Fun!!! Relax!!!
+          </Content>
           <UserInfo className={step === 1 ? null : "hide"}>
             <InputDiv>
               <Input
@@ -598,6 +782,7 @@ const Booking = ({ drop, setBook, user }) => {
                 onChange={(e) =>
                   setUserDetails({ ...userDetails, fname: e.target.value })
                 }
+                value={userDetails.fname}
               />
               <Input
                 placeholder="Last Name"
@@ -605,6 +790,7 @@ const Booking = ({ drop, setBook, user }) => {
                 onChange={(e) =>
                   setUserDetails({ ...userDetails, lname: e.target.value })
                 }
+                value={userDetails.lname}
               />
               <Input
                 placeholder="Mobile Number"
@@ -612,6 +798,7 @@ const Booking = ({ drop, setBook, user }) => {
                 onChange={(e) =>
                   setUserDetails({ ...userDetails, phone: e.target.value })
                 }
+                value={userDetails.phone}
               />
               <Input
                 placeholder="Email ID"
@@ -619,12 +806,13 @@ const Booking = ({ drop, setBook, user }) => {
                 onChange={(e) =>
                   setUserDetails({ ...userDetails, email: e.target.value })
                 }
+                value={userDetails.email}
               />
             </InputDiv>
             <Proceed
               onClick={(e) => {
                 e.preventDefault();
-                setStep(step + 1);
+                userValidate(true);
               }}
             >
               Proceed
@@ -635,14 +823,11 @@ const Booking = ({ drop, setBook, user }) => {
             className={step === 2 ? "show" : step >= 3 ? "forward" : "hide"}
           >
             <DateDiv>
-              <WidthDiv>
+              <WidthDiv onClick={() => setShowGuest(false)}>
                 <DatePicker
                   minDate={new Date().setDate(new Date().getDate() + 4)}
                   onChange={(date) => {
                     setCheckIn(date);
-                    setToggle((prev) =>
-                      prev.map((item, i) => (i === 0 ? !item : item))
-                    );
                   }}
                   excludeDateIntervals={disabledDateList}
                   selected={checkIn}
@@ -651,14 +836,11 @@ const Booking = ({ drop, setBook, user }) => {
                   placeholderText="Check-In"
                 />
               </WidthDiv>
-              <WidthDiv>
+              <WidthDiv onClick={() => setShowGuest(false)}>
                 <DatePicker
                   minDate={new Date().setDate(new Date().getDate() + 5)}
                   onChange={(date) => {
                     setCheckOut(date);
-                    setToggle((prev) =>
-                      prev.map((item, i) => (i === 1 ? !item : item))
-                    );
                   }}
                   excludeDateIntervals={disabledDateList}
                   selected={checkOut}
@@ -673,12 +855,9 @@ const Booking = ({ drop, setBook, user }) => {
                   setShowGuest(!showGuest);
                 }}
               >
-                {toggle[2]
-                  ? userDetails.adult +
-                    "A / " +
-                    userDetails.child +
-                    "C / "
-                  : "Guests"}{" "}
+                {userDetails.adult !== 0 || userDetails.child !== 0
+                  ? userDetails.adult + "A / " + userDetails.child + "C"
+                  : "Guests"}
                 <box-icon name="chevron-down"></box-icon>
               </GuestDiv>
 
@@ -695,21 +874,19 @@ const Booking = ({ drop, setBook, user }) => {
                           ...userDetails,
                           adult: userDetails.adult + 1,
                         });
-                        setToggle((prev) =>
-                          prev.map((item, i) => (i === 2 ? true : item))
-                        );
                       }}
                     >
                       <box-icon name="plus"></box-icon>
                     </Icon>
                     <GuestNo>{userDetails.adult}</GuestNo>
                     <Icon
-                      onClick={() =>
-                        setUserDetails({
-                          ...userDetails,
-                          adult: userDetails.adult - 1,
-                        })
-                      }
+                      onClick={() => {
+                        if (userDetails.adult !== 0)
+                          setUserDetails({
+                            ...userDetails,
+                            adult: userDetails.adult - 1,
+                          });
+                      }}
                     >
                       <box-icon name="minus"></box-icon>
                     </Icon>
@@ -733,18 +910,18 @@ const Booking = ({ drop, setBook, user }) => {
                     </Icon>
                     <GuestNo>{userDetails.child}</GuestNo>
                     <Icon
-                      onClick={() =>
-                        setUserDetails({
-                          ...userDetails,
-                          child: userDetails.child - 1,
-                        })
-                      }
+                      onClick={() => {
+                        if (userDetails.child !== 0)
+                          setUserDetails({
+                            ...userDetails,
+                            child: userDetails.child - 1,
+                          });
+                      }}
                     >
                       <box-icon name="minus"></box-icon>
                     </Icon>
                   </GuestNoDiv>
                 </GuestRow>
-                
 
                 <Close onClick={() => setShowGuest(false)}>Close</Close>
               </GuestFlex>
@@ -753,7 +930,7 @@ const Booking = ({ drop, setBook, user }) => {
             <Proceed
               onClick={(e) => {
                 e.preventDefault();
-                setStep(step + 1);
+                dateValidate(true);
               }}
             >
               Proceed
@@ -784,20 +961,44 @@ const Booking = ({ drop, setBook, user }) => {
               <PayDiv>
                 <PriceHeading margin>Payment Options</PriceHeading>
                 <PaymentFlex>
-                  <QRScan src={QR} />
+                  <QRScan src={QR} alt="jalsa.futurefarm@okaxis" />
                   <Or>OR</Or>
                   <GpayDiv>
-                    <GpayImg src={Gpay} />
-                    <Number>976963335</Number>
+                    <GpayImg src={Gpay} alt="Gpay logo" />
+                    <Number>9137346274</Number>
                   </GpayDiv>
                 </PaymentFlex>
               </PayDiv>
             </PayDivFlex>
+            <UploadSS>
+              <Upload>Upload Payment SS</Upload>
+              <InputSS>
+                <Label
+                  htmlFor="paymentSS"
+                  className={userDetails.paymentSS ? "uploaded" : null}
+                >
+                  <box-icon name="upload"></box-icon>
+                  {userDetails.paymentSS ? "Uploaded" : "Upload"}
+                </Label>
+              </InputSS>
+              <input
+                type="file"
+                id="paymentSS"
+                style={{ display: "none" }}
+                onChange={(e) =>
+                  setUserDetails({
+                    ...userDetails,
+                    paymentSS: e.target.files[0],
+                  })
+                }
+              />
+            </UploadSS>
             <Proceed
               onClick={(e) => {
                 e.preventDefault();
                 booking();
               }}
+              less
             >
               Proceed
             </Proceed>
@@ -808,14 +1009,7 @@ const Booking = ({ drop, setBook, user }) => {
               Thank You for booking Jalsa, our admin will confirm your booking
               and get in contact with you soon.
             </ThankYouText>
-            <Proceed
-              onClick={(e) => {
-                e.preventDefault();
-                setBook(false);
-              }}
-            >
-              Close
-            </Proceed>
+            <Proceed onClick={enableScroll}>Close</Proceed>
           </ThankYou>
         </Popup>
       </BlurredBg>

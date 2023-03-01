@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Hero from "../Images/Hero.png";
+// import Hero from "../Images/Hero.png";
 import Triangle from "../Images/Triangle.svg";
 import Triangle2 from "../Images/Flipped Triangle.svg";
 
@@ -8,7 +8,6 @@ const Container = styled.section`
   aspect-ratio: 12/13;
   height: 260px;
   position: relative;
-  background-image: url(${Hero});
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -31,12 +30,17 @@ const SideCut = styled.img`
   }
 `;
 
-const AmenitiesImg = ({ right }) => {
+const AmenitiesImg = ({ right, img }) => {
   return (
-    <Container>
+    <Container
+      style={{
+        backgroundImage: `url(${img})`,
+      }}
+    >
       <SideCut
         src={right ? Triangle2 : Triangle}
         className={right ? "right" : "left"}
+        alt="Amenities Image"
       />
     </Container>
   );
