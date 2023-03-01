@@ -31,6 +31,7 @@ import One from "../Images/3.jpg";
 import Two from "../Images/5.jpg";
 import Three from "../Images/13.jpg";
 import Four from "../Images/19.jpg";
+import Offer from "../Images/Offer.png";
 
 const Container = styled.main`
   padding: 20px;
@@ -332,6 +333,18 @@ const ReviewsSection = styled.section`
   max-width: 1200px;
 `;
 
+const OfferSection = styled.section`
+  background-image: url(${Offer});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding: 10px;
+  margin: 80px auto;
+  height: 680px;
+  position: relative;
+  max-width: 1200px;
+`;
+
 const TriangleImg = styled.img`
   position: absolute;
   left: 50%;
@@ -569,7 +582,7 @@ const Home = () => {
 
         <BackImg />
       </AmenitiesDiv>
-      <ReviewsSection>
+      {/* <ReviewsSection>
         <TriangleImg src={Triangle} className="top" />
         <TriangleImg src={Triangle} className="bottom" />
 
@@ -583,7 +596,9 @@ const Home = () => {
         >
           <Reviews />
         </Carousel>
-      </ReviewsSection>
+      </ReviewsSection> */}
+
+      <OfferSection />
       <Greeting id="3">
         <Hello>Hello Dear</Hello>
         <Farm>Best Features!</Farm>
