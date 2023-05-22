@@ -2,10 +2,11 @@ import styled from "styled-components";
 import React, { useState } from "react";
 import Star from "../Images/Star.png";
 import QR from "../Images/QRCode.png";
+import InstaQR from "../Images/Insta QR.png";
 import Gpay from "../Images/Gpay.png";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { userBooking } from "../Services/user";
+// import { userBooking } from "../Services/user";
 import { toast } from "react-toastify";
 const formData = require("form-data");
 
@@ -531,6 +532,7 @@ const Number = styled.p`
 
 const UploadSS = styled.div`
   display: flex;
+  visibility: hidden;
   justify-content: center;
   align-items: center;
   text-align: center;
@@ -551,6 +553,7 @@ const Label = styled.label`
   align-items: center;
   font-weight: 400;
   font-size: 14px;
+  font-family: ${(props) => props.theme.Fonts.Poppins};
   color: #c5c5c5;
   margin-left: 20px;
   padding: 5px 20px;
@@ -601,10 +604,69 @@ const ThankYouText = styled.p`
   margin: 59px 0;
 `;
 
+const ContactUs = styled.div`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 80px 0;
+`;
+
+const Logo = styled.div`
+  position: relative;
+  top: 0;
+  transition: top ease 0.5s;
+
+  & box-icon {
+    fill: #bb9356;
+    height: 54px;
+    width: 54px;
+    margin-right: 7px;
+  }
+`;
+
+const LogoImg = styled.img`
+  height: 54px;
+  width: 54px;
+  position: relative;
+  top: 0;
+  transition: top ease 0.5s;
+`;
+
+const ContactInfo = styled.a`
+  text-decoration: none;
+  color: #000;
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &:hover ${Logo} {
+    top: -15px;
+  }
+
+  &:hover ${LogoImg} {
+    top: -15px;
+  }
+`;
+
+const Contact = styled.p`
+  font-family: ${(props) => props.theme.Fonts.Poppins};
+  margin: 15px 0 5px;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+`;
+
+const Info = styled.p`
+  font-family: ${(props) => props.theme.Fonts.Poppins};
+  color: #a5a5a5;
+`;
+
 const Booking = ({ drop, setBook, user }) => {
   let form = new formData();
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(4);
   const [showGuest, setShowGuest] = useState(false);
   const [checkIn, setCheckIn] = useState(null);
   const [checkOut, setCheckOut] = useState(null);
@@ -620,12 +682,12 @@ const Booking = ({ drop, setBook, user }) => {
 
   let disabledDateList = [];
   const disableDates = () => {
-    user.forEach((item) => {
-      disabledDateList.push({
-        start: new Date(item.checkIn),
-        end: new Date(item.checkOut),
-      });
-    });
+    // user.forEach((item) => {
+    //   disabledDateList.push({
+    //     start: new Date(item.checkIn),
+    //     end: new Date(item.checkOut),
+    //   });
+    // });
   };
 
   if (drop) disableDates();
@@ -707,14 +769,14 @@ const Booking = ({ drop, setBook, user }) => {
     form.set("children", userDetails.child);
     form.set("image", userDetails.paymentSS);
 
-    userBooking(form)
-      .then((result) => {
-        toast.success(result.data.message);
-        setStep(step + 1);
-      })
-      .catch((err) => {
-        toast.warn(err.response.data.message);
-      });
+    // userBooking(form)
+    //   .then((result) => {
+    //     toast.success(result.data.message);
+    //     setStep(step + 1);
+    //   })
+    //   .catch((err) => {
+    //     toast.warn(err.response.data.message);
+    //   });
   };
 
   const enableScroll = (e) => {
@@ -744,8 +806,8 @@ const Booking = ({ drop, setBook, user }) => {
             <box-icon name="x"></box-icon>
           </Cross>
           <Heading>Reservation</Heading>
-          <BookHeading>Book Your Stay</BookHeading>
-          <Progress>
+          <BookHeading> Reach out to us</BookHeading>
+          {/* <Progress>
             <Step onClick={() => setStep(1)}>
               <StepNo>1</StepNo>
               <StarImg src={Star} alt="Star" />
@@ -769,12 +831,12 @@ const Booking = ({ drop, setBook, user }) => {
               <StepNo>4</StepNo>
               <StarImg src={Star} />
             </Step>
-          </Progress>
+          </Progress> */}
           <Content>
-            Book your stay here because enjoyment is the aim and we provide just
+            Contact us here because enjoyment is the aim and we provide just
             that. Family!!! Friends!!! Fun!!! Relax!!!
           </Content>
-          <UserInfo className={step === 1 ? null : "hide"}>
+          {/* <UserInfo className={step === 1 ? null : "hide"}>
             <InputDiv>
               <Input
                 placeholder="First Name"
@@ -817,9 +879,9 @@ const Booking = ({ drop, setBook, user }) => {
             >
               Proceed
             </Proceed>
-          </UserInfo>
+          </UserInfo> */}
 
-          <DateInfo
+          {/* <DateInfo
             className={step === 2 ? "show" : step >= 3 ? "forward" : "hide"}
           >
             <DateDiv>
@@ -935,26 +997,46 @@ const Booking = ({ drop, setBook, user }) => {
             >
               Proceed
             </Proceed>
-          </DateInfo>
+          </DateInfo> */}
 
-          <PayInfo
+          {/* <PayInfo
             className={step === 3 ? "show" : step === 4 ? "forward" : "hide"}
           >
             <PayDivFlex>
               <PayDiv>
                 <PriceHeading>Price Details</PriceHeading>
                 <FlexDiv>
-                  <Detail>₹20,000 X 3 Days</Detail>
-                  <Detail>₹60,000</Detail>
+                  <Detail>Upto 16 people (4 BHK)</Detail>
+                  <Detail>₹20,000</Detail>
                 </FlexDiv>
                 <FlexDiv>
-                  <Detail>Service Fee</Detail>
-                  <Detail>₹2,000</Detail>
+                  <Detail>For 4 people (1 BHK)</Detail>
+                  <Detail>₹5,000</Detail>
                 </FlexDiv>
                 <Line />
                 <FlexDiv>
-                  <Total>Total</Total>
-                  <Total>₹62,000</Total>
+                  <Total>Upload Payment SS</Total>
+
+                  <InputSS>
+                    <Label
+                      htmlFor="paymentSS"
+                      className={userDetails.paymentSS ? "uploaded" : null}
+                    >
+                      <box-icon name="upload"></box-icon>
+                      {userDetails.paymentSS ? "Uploaded" : "Upload"}
+                    </Label>
+                  </InputSS>
+                  <input
+                    type="file"
+                    id="paymentSS"
+                    style={{ display: "none" }}
+                    onChange={(e) =>
+                      setUserDetails({
+                        ...userDetails,
+                        paymentSS: e.target.files[0],
+                      })
+                    }
+                  />
                 </FlexDiv>
               </PayDiv>
               <PayLine />
@@ -1002,15 +1084,56 @@ const Booking = ({ drop, setBook, user }) => {
             >
               Proceed
             </Proceed>
-          </PayInfo>
+          </PayInfo> */}
 
-          <ThankYou className={step === 4 ? "show" : "hide"}>
+          {/* <ThankYou className={step === 4 ? "show" : "hide"}>
             <ThankYouText>
               Thank You for booking Jalsa, our admin will confirm your booking
               and get in contact with you soon.
             </ThankYouText>
             <Proceed onClick={enableScroll}>Close</Proceed>
-          </ThankYou>
+          </ThankYou> */}
+
+          <ContactUs>
+            <ContactInfo
+              href="https://www.instagram.com/jalsa_villa/"
+              target="_blank"
+            >
+              {/* <LogoImg src={InstaQR} /> */}
+              <Logo>
+                <box-icon type="logo" name="instagram"></box-icon>
+              </Logo>
+              <Contact>Instagram</Contact>
+              <Info>@jalsa_villa</Info>
+            </ContactInfo>
+            <ContactInfo href="tel:+919137346274" target="_blank">
+              <Logo>
+                <box-icon name="phone"></box-icon>
+              </Logo>
+              <Contact>Phone</Contact>
+              <Info>+91 91373 46274</Info>
+            </ContactInfo>
+            <ContactInfo
+              href="https://api.whatsapp.com/send?phone=919137346274"
+              target="_blank"
+            >
+              <Logo>
+                <box-icon type="logo" name="whatsapp"></box-icon>
+              </Logo>
+              <Contact>WhatsApp</Contact>
+              <Info>+91 91373 46274</Info>
+            </ContactInfo>
+            {/* <ContactInfo
+              href="mailto:jalsa.futurefarm@gmail.com"
+              target="_blank"
+            >
+              <Logo>
+                <box-icon name="envelope"></box-icon>
+              </Logo>
+              <Contact>e-mail</Contact>
+              <Info>jalsa.futurefarm@gmail.com</Info>
+            </ContactInfo> */}
+          </ContactUs>
         </Popup>
       </BlurredBg>
     </>

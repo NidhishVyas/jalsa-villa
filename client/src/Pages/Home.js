@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import Hero from "../Images/villanight.jpg";
+import Hero from "../Images/Hero.jpg";
 import ReviewBg from "../Images/ReviewBg.png";
 import Triangle from "../Images/Triangle.svg";
 import HeroVec from "../Images/Hero Triangle.png";
@@ -15,7 +15,7 @@ import Booking from "../Components/Booking";
 import Reviews from "../Components/Reviews";
 import "../Helper/carousel.css";
 import Footer from "../Components/Footer";
-import { getAll } from "../Services/user";
+// import { getAll } from "../Services/user";
 import { toast } from "react-toastify";
 import SwimNight from "../Images/swimnight.jpg";
 import Swim from "../Images/swim.jpg";
@@ -32,6 +32,13 @@ import Two from "../Images/5.jpg";
 import Three from "../Images/13.jpg";
 import Four from "../Images/19.jpg";
 import Offer from "../Images/Offer.png";
+import Img1 from "../Images/Img1.jpg";
+import Img2 from "../Images/Img2.jpg";
+import Img3 from "../Images/Img3.jpg";
+import Img4 from "../Images/Img4.jpg";
+import Img5 from "../Images/Img5.jpg";
+import Img6 from "../Images/Img6.jpg";
+import Img7 from "../Images/Img7.jpg";
 
 const Container = styled.main`
   padding: 20px;
@@ -42,6 +49,7 @@ const Container = styled.main`
 
 const HeroSectionMob = styled.section`
   background-image: url(${Hero});
+  background-color: #000;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -55,6 +63,7 @@ const HeroSectionMob = styled.section`
 
 const HeroSectionDesk = styled.section`
   background-image: url(${Hero});
+  box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.6);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -336,13 +345,22 @@ const ReviewsSection = styled.section`
 const OfferSection = styled.section`
   background-image: url(${Offer});
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
   background-position: center;
   padding: 10px;
   margin: 80px auto;
-  height: 680px;
+  height: 180px;
   position: relative;
   max-width: 1200px;
+  @media ${(props) => props.theme.MediaQueries.s.query} {
+    height: 280px;
+  }
+  @media ${(props) => props.theme.MediaQueries.m.query} {
+    height: 380px;
+  }
+  @media ${(props) => props.theme.MediaQueries.l.query} {
+    height: 680px;
+  }
 `;
 
 const TriangleImg = styled.img`
@@ -466,15 +484,15 @@ const Home = () => {
     setBook(true);
   };
 
-  useEffect(() => {
-    getAll()
-      .then((result) => {
-        setUser(result.data.data);
-      })
-      .catch((err) => {
-        toast.warn(err.response.data.message);
-      });
-  }, []);
+  // useEffect(() => {
+  //   getAll()
+  //     .then((result) => {
+  //       setUser(result.data.data);
+  //     })
+  //     .catch((err) => {
+  //       toast.warn(err.response.data.message);
+  //     });
+  // }, []);
 
   return (
     <Container>
@@ -495,11 +513,11 @@ const Home = () => {
       <HeroSectionDesk>
         <Position className="right">
           <HeroTriangle src={HeroVec} className="right" alt="Triangle" />
-          <HeroArrow src={Arrow} className="right" alt="Arrow" />
+          {/* <HeroArrow src={Arrow} className="right" alt="Arrow" /> */}
         </Position>
         <Position className="left">
           <HeroTriangle src={HeroVec} className="left" alt="Triangle" />
-          <HeroArrow src={Arrow} className="left" alt="Arrow" />
+          {/* <HeroArrow src={Arrow} className="left" alt="Arrow" /> */}
         </Position>
 
         <Navbar>
@@ -540,14 +558,13 @@ const Home = () => {
       </Greeting>
       <About>Come create memories with Us!!!</About>
       <ImageDiv>
-        <Images img={Villa2} />
-        <Images img={Four} />
-        <Images img={VillaBackLong} />
-        <Images img={One} />
-        <Images img={Two} />
-        <Images img={Cric} />
-        <Images img={Three} />
-        <Images img={BackLong} />
+        <Images img={Img1} />
+        <Images img={Img2} />
+        <Images img={Img3} />
+        <Images img={Img4} />
+        <Images img={Img5} />
+        <Images img={Img6} />
+        <Images img={Img7} />
       </ImageDiv>
       <Greeting id="2">
         <Hello>Hello Dear</Hello>

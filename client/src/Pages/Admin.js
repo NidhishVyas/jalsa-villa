@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Hero from "../Images/Hero.png";
-import { getAllPending, getAllAck, statusUpdate } from "../Services/admin";
+// import { getAllPending, getAllAck, statusUpdate } from "../Services/admin";
 import Loader from "../Components/Loader.js";
 import { useNavigate } from "react-router-dom";
 import * as ROUTES from "../Constants/routes";
@@ -255,33 +255,33 @@ const Admin = () => {
   ];
 
   const update = (id, status) => {
-    statusUpdate(id, status)
-      .then((result) => {
-        toast.success(result.data.message);
-        setToggle(!toggle);
-      })
-      .catch((err) => {
-        toast.warn(err.response.data.message);
-      });
+    // statusUpdate(id, status)
+    //   .then((result) => {
+    //     toast.success(result.data.message);
+    //     setToggle(!toggle);
+    //   })
+    //   .catch((err) => {
+    //     toast.warn(err.response.data.message);
+    //   });
   };
 
   useEffect(() => {
     setLoading(true);
-    if (tab === 1) {
-      getAllPending()
-        .then((result) => {
-          setPending(result.data.data);
-          setLoading(false);
-        })
-        .catch((err) => toast.warn(err));
-    } else if (tab === 2) {
-      getAllAck()
-        .then((result) => {
-          setAck(result.data.data);
-          setLoading(false);
-        })
-        .catch((err) => toast.warn(err));
-    }
+    // if (tab === 1) {
+    //   getAllPending()
+    //     .then((result) => {
+    //       setPending(result.data.data);
+    //       setLoading(false);
+    //     })
+    //     .catch((err) => toast.warn(err));
+    // } else if (tab === 2) {
+    //   getAllAck()
+    //     .then((result) => {
+    //       setAck(result.data.data);
+    //       setLoading(false);
+    //     })
+    //     .catch((err) => toast.warn(err));
+    // }
   }, [tab, toggle]);
 
   return (

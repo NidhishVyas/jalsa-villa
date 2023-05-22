@@ -44,7 +44,7 @@ const SocialDiv = styled.div`
   gap: 40px;
 `;
 
-const SocialIcons = styled.div`
+const SocialIcons = styled.a`
   background-color: #1b1b1b;
   aspect-ratio: 1;
   height: 36px;
@@ -147,16 +147,22 @@ const Footer = () => {
         <TriangleImg src={Triangle} alt="Triangle" />
         <FlexDiv>
           <Div>
-            <FollowText>Follow Us</FollowText>
+            <FollowText>Contact Us</FollowText>
             <SocialDiv>
-              <SocialIcons>
+              <SocialIcons
+                href="https://www.instagram.com/jalsa_villa/"
+                target="_blank"
+              >
                 <box-icon type="logo" name="instagram"></box-icon>
               </SocialIcons>
-              <SocialIcons>
-                <box-icon name="facebook" type="logo"></box-icon>
+              <SocialIcons
+                href="https://api.whatsapp.com/send?phone=919137346274"
+                target="_blank"
+              >
+                <box-icon name="whatsapp" type="logo"></box-icon>
               </SocialIcons>
-              <SocialIcons>
-                <box-icon name="twitter" type="logo"></box-icon>
+              <SocialIcons href="tel:+919137346274" target="_blank">
+                <box-icon name="phone"></box-icon>
               </SocialIcons>
             </SocialDiv>
           </Div>
@@ -175,7 +181,7 @@ const Footer = () => {
       </FooterSection>
       <Copyright>
         <img src={FooterTri} alt="Footer SVG" />
-        <box-icon name="copyright"></box-icon>2022 Farmhouse, With&nbsp;
+        <box-icon name="copyright"></box-icon>2023 Farmhouse, With&nbsp;
         <span>love</span>
       </Copyright>
     </>
